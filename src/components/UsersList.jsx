@@ -28,11 +28,9 @@ const UsersList = () => {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    Promise.resolve("for batching hook update").then(() => {
-      setLimit(parseInt(event.target.value, 10));
+    setLimit(parseInt(event.target.value, 10));
       //Set the current page back to zero when limit changes
-      setPage(0);
-    });
+    setPage(0);
   };
 
   const handleSearchTextChange = async (text) => {
