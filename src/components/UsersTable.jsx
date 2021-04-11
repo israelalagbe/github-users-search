@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePagination from "@material-ui/core/TablePagination";
-import Chip from "@material-ui/core/Chip";
-import Chat from "@material-ui/icons/Chat";
 import TablePaginationActions from "./TablePagination";
 import Grid from "@material-ui/core/Grid";
 import SearchForm from "./SearchForm";
-import { makeStyles, Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import useModal from "../util/useModal";
 import UserProfileModal from "./UserProfileModal";
 import { fetchUsers } from "../store/actions/users";
@@ -119,10 +115,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginBottom: theme.spacing(2),
     overflowX: "hidden",
-  },
-  table: {
-    marginTop: 20,
-    minWidth: 750,
   },
   form: {
     zIndex: 1000,
