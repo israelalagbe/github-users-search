@@ -1,4 +1,4 @@
-export default function pause(ms){
+export default function delay(ms){
     return new Promise((resolve, reject)=>{
         setTimeout(() => {
             resolve();
