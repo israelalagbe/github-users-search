@@ -11,7 +11,7 @@ import UserProfileModal from "./UserProfileModal";
 import { fetchUsers } from "../store/actions/users";
 import UserCard from "./UserCard";
 
-const UsersTable = () => {
+const UsersList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const profileModal = useModal();
@@ -126,4 +126,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default UsersTable;
+export default UsersList;

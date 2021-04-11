@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,30 +11,35 @@ import { fetchUsersCompletion } from '../store/actions/users';
  * @param {object} props 
  * @param {(text:string)=>void} props.setSearchText
  */
-function SearchForm({ setSearchText }) {
+function SearchForm({ searchText, setSearchText }) {
 
   const dispatch = useDispatch();
   //auto completion data
   const usersCompletions = useSelector((state) => state.user.usersCompletions);
 
-  const debouncedSetSearchText = debounce(setSearchText,500);
+  const debouncedSetSearchText = debounce(setSearchText,200);
 
   const handleOnSearch = (text) => {
 
-    const searchText= text.trim();
+    const trimmedText= text.trim();
 
     //Because of github rate limiting
-    if(searchText.length && searchText.length < 2){
+    if(trimmedText.length && trimmedText.length < 2){
       //Fecth autocompletion data
-      dispatch(fetchUsersCompletion(searchText));
+      dispatch(fetchUsersCompletion(trimmedText));
     }
+
     
-    debouncedSetSearchText(searchText);
+    debouncedSetSearchText(trimmedText);
+
+    
+    
 
   }
 
   const handleOnSelect = item => {
-    setSearchText(item.name);
+    debouncedSetSearchText(item.name);
+   
 
   }
 
@@ -51,9 +56,8 @@ function SearchForm({ setSearchText }) {
       items={autoCompletionItems}
       onSearch={handleOnSearch}
       onSelect={handleOnSelect}
-      autoFocus
       maxResults={6}
-      inputDebounce={0}
+      inputDebounce={20}
     />
   );
 }
