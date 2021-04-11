@@ -23,12 +23,8 @@ function SearchForm({ searchText, setSearchText }) {
 
     const trimmedText= text.trim();
 
-    //Because of github rate limiting
-    if(trimmedText.length && trimmedText.length < 2){
-      //Fecth autocompletion data
-      dispatch(fetchUsersCompletion(trimmedText));
-    }
-
+    //Fecth autocompletion data
+    dispatch(fetchUsersCompletion(trimmedText));
     
     debouncedSetSearchText(trimmedText);
 
@@ -51,13 +47,13 @@ function SearchForm({ searchText, setSearchText }) {
 
   return (
     <ReactSearchAutocomplete
-
+      autoFocus={false}
       placeholder="Search Users"
       items={autoCompletionItems}
       onSearch={handleOnSearch}
       onSelect={handleOnSelect}
       maxResults={6}
-      inputDebounce={20}
+      inputDebounce={200}
     />
   );
 }
