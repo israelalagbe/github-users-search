@@ -15,10 +15,12 @@ function hideLoadingBar() {
         store.default.dispatch(hideLoading());
     });
 }
+
 const api = Axios.create({
     withCredentials: false,
 });
 api.interceptors.request.use(function (config) {
+    showLoadingBar()
     return config;
 }, function (error) {
     hideLoadingBar()
@@ -31,7 +33,16 @@ api.interceptors.response.use(function (response) {
     return response.data;
 }, function (err) {
     hideLoadingBar();
-    return Promise.reject(err);
+
+    if (!err.response) {
+        return Promise.reject(new Error('Error occured while sending the request, please check your internet settings'));
+    }
+    
+    if (err.response.status === 404) {
+        return Promise.reject(new Error('No search results found!'));
+    }
+
+    return Promise.reject(new Error(err.response.data.message));
 });
 
 export default api;
