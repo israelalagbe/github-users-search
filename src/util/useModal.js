@@ -1,6 +1,6 @@
 import { useState } from 'react';
 /**
- *
+ * A utility hook for showing and 
  * @param initialMode The default state of the modal, true means the modal is open,
  * and false means it is closed by default
  */

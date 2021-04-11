@@ -1,12 +1,33 @@
 body {
   padding-top: 30px;
-  font-size: 25px;
+  /* font-size: 25px; */
   font-family: "Noto Serif JP", sans-serif;
 }
-
 * {
   outline: none;
 }
+
+a{
+  text-decoration: none;
+}
+
+
+.profileImage{
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+}
+
+.margin-0{
+  margin: 0px;
+}
+
+.flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .notification-container {
   z-index: 3000 !important;
@@ -28,3 +49,5 @@ body {
     width: 90% !important;
   }
 }
+
+

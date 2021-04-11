@@ -1,31 +1,34 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
 
 
-
-export default function UserCard() {
+export default function UserCard({ user, openProfile }) {
   const classes = useStyles();
 
   return (
-    <Card className={[classes.root, classes.flexCenter]}>
+    <Card className={`${classes.root} ${classes.flexCenter}`}>
       <CardContent className={classes.flexCenter}>
-        <img className={classes.profileImage} src="https://t3.ftcdn.net/jpg/02/26/33/90/360_F_226339055_JpvadLUXEq4VnymA195aQlrvSQVAq3rz.jpg" alt=""/>
-        <Typography variant="h5" component="h2" className={classes.username}>
-          @israelalagbe
-        </Typography>
+        <img
+          className='profileImage'
+          src={user.avatar_url}
+          alt=""
+        />
+        <h2 className={classes.username}>
+          @{user.login}
+        </h2>
       </CardContent>
       <CardActions>
-        <Button size="small" color="secondary">View Profile</Button>
+        <Button size="small" color="secondary" onClick={()=> openProfile(user)}>
+          View Profile
+        </Button>
       </CardActions>
     </Card>
   );
 }
-
 
 const useStyles = makeStyles({
   root: {
@@ -33,24 +36,12 @@ const useStyles = makeStyles({
   },
 
   flexCenter: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column'
-  },
-
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
   },
   username: {
-    margin: 0
-  },
-  profileImage: {
-    width: "7rem",
-    height: "7rem",
-    borderRadius: "50%"
+    margin: 0,
   }
 });
