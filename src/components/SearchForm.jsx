@@ -17,7 +17,7 @@ function SearchForm({ searchText, setSearchText }) {
   //auto completion data
   const usersCompletions = useSelector((state) => state.user.usersCompletions);
 
-  const debouncedSetSearchText = debounce(setSearchText,200);
+  const debouncedSetSearchText = debounce(setSearchText,300);
 
   const handleOnSearch = (text) => {
 
@@ -58,7 +58,7 @@ function SearchForm({ searchText, setSearchText }) {
       onSearch={handleOnSearch}
       onSelect={handleOnSelect}
       maxResults={6}
-      inputDebounce={200}
+      inputDebounce={0}
     />
   );
 }
