@@ -1,9 +1,11 @@
 import * as actionTypes from './actionTypes';
 import api from '../../util/api';
-import { NotificationManager } from 'react-notifications';
+import {
+    NotificationManager
+} from 'react-notifications';
 
 
-const baseUrl = "https://api.github.com/search/users";
+const baseUrl = "https://api.github.com";
 
 
 /**
@@ -14,23 +16,48 @@ const baseUrl = "https://api.github.com/search/users";
  */
 export const fetchUsers = (query) => {
     return async (dispatch) => {
-      dispatch(fetchUsersStarted());
-      try {
-        const { users, total } = await api.get(`${baseUrl}/users`, {
-          params: query
-        });
-        dispatch(fetchUsersSuccess({
-          users,
-          total
-        }));
-  
-      } catch (error) {
-  
-        dispatch(fetchUsersError(error));
-        NotificationManager.error("Error occured while loading users, please check your internet connection!")
-      }
+        dispatch(fetchUsersStarted());
+        try {
+            const result = await api.get(`${baseUrl}/search/users`, {
+                params: {
+                    q: query.q,
+                    per_page: query.limit,
+                    page: query.page
+                }
+            });
+
+            dispatch(fetchUsersSuccess({
+                users: result.items,
+                total: result.total_count
+            }));
+        } catch (error) {
+
+            dispatch(fetchUsersError(error));
+            NotificationManager.error(error.message)
+        }
     }
-  };
+};
+
+/**
+ * @param {string} username 
+ */
+export const fetchUser = (username) => {
+    return async (dispatch) => {
+        dispatch(fetchSingleUserStarted());
+        try {
+            const user = await api.get(`${baseUrl}/users/${username}`);
+          
+            dispatch(fetchSingleUserSuccess({
+                user
+            }));
+        } catch (error) {
+
+            dispatch(fetchSingleUserError(error));
+            NotificationManager.error(error.message)
+        }
+    }
+};
+
 
 export const fetchUsersStarted = () => {
     return {
@@ -51,3 +78,28 @@ export const fetchUsersSuccess = (payload) => {
         type: actionTypes.FETCH_USERS_SUCCESS
     };
 };
+
+
+
+export const fetchSingleUserStarted = () => {
+    return {
+        type: actionTypes.FETCH_SINGLE_USER
+    };
+};
+
+export const fetchSingleUserSuccess = (payload) => {
+    return {
+        payload,
+        type: actionTypes.FETCH_SINGLE_USER_SUCCESS
+    };
+};
+
+export const fetchSingleUserError = (error) => {
+    return {
+        payload: error,
+        type: actionTypes.FETCH_SINGLE_USER_ERROR
+    };
+};
+
+
+
