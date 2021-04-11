@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMoviesCompletions } from '../store/actions/movie';
 import debounce from '../util/debounce';
+import { fetchUsersCompletion } from '../store/actions/users';
 
 
 /**
@@ -14,29 +14,33 @@ import debounce from '../util/debounce';
 function SearchForm({ setSearchText }) {
 
   const dispatch = useDispatch();
-  // const { moviesCompletions, loading } = useSelector((state) => state.movie);
+  //auto completion data
+  const usersCompletions = useSelector((state) => state.user.usersCompletions);
 
   const debouncedSetSearchText = debounce(setSearchText,500);
 
   const handleOnSearch = (text) => {
 
-    text= text.trim();
-    // dispatch(fetchMoviesCompletions({ search: text }));
-    debouncedSetSearchText(text);
+    const searchText= text.trim();
+
+    //Because of github rate limiting
+    if(searchText.length && searchText.length < 2){
+      //Fecth autocompletion data
+      dispatch(fetchUsersCompletion(searchText));
+    }
+    
+    debouncedSetSearchText(searchText);
 
   }
 
   const handleOnSelect = item => {
-
-    debouncedSetSearchText(item.name);
+    setSearchText(item.name);
 
   }
 
-  const handleOnFocus = () => {
+  const autoCompletionItems = usersCompletions.map((user)=> ({name: user.login}));
 
-    // dispatch(fetchMoviesCompletions({ search: '' }));
-    
-  }
+  
 
  
 
@@ -44,11 +48,12 @@ function SearchForm({ setSearchText }) {
     <ReactSearchAutocomplete
 
       placeholder="Search Users"
-      items={[]}
+      items={autoCompletionItems}
       onSearch={handleOnSearch}
       onSelect={handleOnSelect}
-      onFocus={handleOnFocus}
       autoFocus
+      maxResults={6}
+      inputDebounce={0}
     />
   );
 }

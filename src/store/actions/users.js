@@ -58,6 +58,33 @@ export const fetchUser = (username) => {
     }
 };
 
+/**
+ * Used to fetch data used for the auto completion of the search field
+ * @param {string} search
+ */
+export const fetchUsersCompletion = (search) => {
+    return async (dispatch) => {
+        dispatch(fetchUsersCompletionsStarted());
+        try {
+            const result = await api.get(`${baseUrl}/search/users`, {
+                params: {
+                    q: search,
+                    per_page: 50,
+                    page: 1
+                }
+            });
+
+            dispatch(fetchUsersCompletionsSuccess({
+                users: result.items
+            }));
+        } catch (error) {
+
+            dispatch(fetchUsersCompletionsError(error));
+            NotificationManager.error(error.message)
+        }
+    }
+};
+
 
 export const fetchUsersStarted = () => {
     return {
@@ -103,3 +130,24 @@ export const fetchSingleUserError = (error) => {
 
 
 
+
+export const fetchUsersCompletionsStarted = () => {
+    return {
+      type: actionTypes.FETCH_USERS_COMPLETION
+    };
+  };
+  
+  export const fetchUsersCompletionsError = (error) => {
+    return {
+      payload: error,
+      type: actionTypes.FETCH_USERS_COMPLETION_ERROR
+    };
+  };
+  
+  export const fetchUsersCompletionsSuccess = (payload) => {
+    return {
+      payload,
+      type: actionTypes.FETCH_USERS_COMPLETION_SUCCESS
+    };
+  };
+  

@@ -14,6 +14,7 @@ const api = Axios.create({
 
 //Middleware for request
 api.interceptors.request.use(function (config) {
+    console.log(config.headers)
     showLoadingBar()
     return config;
 }, function (error) {

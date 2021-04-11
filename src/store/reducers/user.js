@@ -56,7 +56,7 @@ const userReducer = (state = initialState, action) => {
     }
     case actionTypes.FETCH_USERS_COMPLETION_SUCCESS: {
       stateClone.loading = false;
-      stateClone.usersCompletions = action.payload.usersCompletions;
+      stateClone.usersCompletions = action.payload.users;
       break;
     }
     case actionTypes.FETCH_USERS_COMPLETION_ERROR: {
