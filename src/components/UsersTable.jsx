@@ -20,7 +20,7 @@ const UsersTable = () => {
   const dispatch = useDispatch();
   const profileModal = useModal();
 
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
   const [limit, setLimit] = React.useState(12);
 
   const [search, setSearchText] = React.useState("");
@@ -32,9 +32,18 @@ const UsersTable = () => {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setLimit(parseInt(event.target.value, 10));
-    //Set the current page back to zero when limit changes
-    setPage(0);
+    Promise.resolve("for batching hook update").then(() => {
+      setLimit(parseInt(event.target.value, 10));
+      //Set the current page back to zero when limit changes
+      setPage(0);
+    });
+  };
+
+  const handleSearchTextChange = async (text) => {
+    Promise.resolve("for batching hook update").then(() => {
+      setSearchText(text);
+      setPage(0);
+    });
   };
 
   useEffect(() => {
@@ -43,6 +52,7 @@ const UsersTable = () => {
         fetchUsers({
           q: search,
           limit,
+          page,
         })
       );
     }
@@ -63,7 +73,7 @@ const UsersTable = () => {
         <br />
         <Grid container direction="row" justify="center" spacing={2}>
           <Grid item md={4} xs={11} className={classes.form}>
-            <SearchForm searchText={search} setSearchText={setSearchText} />
+            <SearchForm searchText={search} setSearchText={handleSearchTextChange} />
           </Grid>
         </Grid>
         <br />
