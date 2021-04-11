@@ -23,11 +23,12 @@ function SearchForm({ searchText, setSearchText }) {
 
     const trimmedText= text.trim();
 
-    //Because of github rate limiting
-    if(trimmedText.length && trimmedText.length < 2){
-      //Fecth autocompletion data
-      dispatch(fetchUsersCompletion(trimmedText));
-    }
+    //Temporarily disable autocompletion due to closing bugs
+
+    // if(trimmedText.length && trimmedText.length < 2){
+    //   //Fecth autocompletion data
+    //   dispatch(fetchUsersCompletion(trimmedText));
+    // }
 
     
     debouncedSetSearchText(trimmedText);
